@@ -6,54 +6,29 @@ jQuery(function($) {
     ---------------------------- */
     $(window).load( function() {
 
-        /* Load Flex slider
-        -------------------------------------------*/
-        // The slider being synced must be initialized first
-        $('#carousel').flexslider({
-            animation: "slide",
-            controlNav: false,
-            animationLoop: false,
-            slideshow: false,
-            itemWidth: 170,
-            itemMargin: 10,
-            asNavFor: '#slider'
-        });
+        $('.js-content').hide();
 
-        $('#slider').flexslider({
-            animation: "slide",
-            controlNav: false,
-            animationLoop: false,
-            slideshow: false,
-            sync: "#carousel",
-            start: function() {
+        /* Remove preloader
+         -----------------------------------------------*/
+        $('#status').fadeOut(); // will first fade out the loading animation
+        $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
 
-                $('.js-content').hide();
-                
-                /* Remove preloader
-                -----------------------------------------------*/
-                $('#status').fadeOut(); // will first fade out the loading animation
-                $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
+        /* Get hash in URL and show page content
+         ---------------------------------------------------------*/
+        var hash = window.location.hash.substring(1);
 
-                /* Get hash in URL and show page content
-                ---------------------------------------------------------*/
-                var hash = window.location.hash.substring(1);
-                
-                if(hash == "") {
-                    hash = "page-1";
-                }
+        if(hash == "") {
+            hash = "page-1";
+        }
 
-                var defaultImgSrc = $("img#" + hash + "-img").attr('src');
-                $.backstretch(defaultImgSrc, {speed: 500});                              // show background image
+        var defaultImgSrc = $("img#" + hash + "-img").attr('src');
+        $.backstretch(defaultImgSrc, {speed: 500});                              // show background image
 
-                $(".js-nav-item[data-nav-item-id='" + hash + "']").addClass("active");   // highlight nav item
-                $(".js-content[data-page-id='" + hash + "']").show();                    // show page content
-                $(".js-footer").fadeIn();                                                // show footer
-                
-            }
-        });       
-
+        $(".js-nav-item[data-nav-item-id='" + hash + "']").addClass("active");   // highlight nav item
+        $(".js-content[data-page-id='" + hash + "']").show();                    // show page content
+        $(".js-footer").fadeIn();
     });
-    
+
     $(document).ready(function(){
 
         /* Handle site title click, hide nav, page content, remove # from URL
@@ -61,10 +36,10 @@ jQuery(function($) {
         $(".js-site-title").click(function(){
             $('.js-nav').fadeToggle();
             $('.js-content-wrapper').fadeToggle();
-            history.pushState("", document.title, window.location.pathname);   
+            history.pushState("", document.title, window.location.pathname);
             $('.js-footer').toggleClass("sticky");
         });
-        
+
         /* Handle Nav item click
         -----------------------------------------*/
         $(".js-nav-item").click(function(){
@@ -74,7 +49,7 @@ jQuery(function($) {
             $(".js-nav-item").removeClass("active");    // Remove active class of all nav items
             $(this).addClass("active");                 // Add active class to current item
 
-            
+
             // Change page background image
 
             var currentItemNo = $(this).attr('data-nav-item-id');
@@ -83,18 +58,18 @@ jQuery(function($) {
 
             $.backstretch(currentImgSrc, {speed: 500});
 
-            
+
             // Change page content
 
             $('.js-content').hide();
             $('.js-footer').hide();
-            
+
             $(".js-content[data-page-id='" + currentItemNo + "']").slideDown('slow', function(){
                 $(".js-footer").fadeIn();
-            });                      
-            
-        }); 
+            });
+
+        });
 
     });
-    
+
 });
